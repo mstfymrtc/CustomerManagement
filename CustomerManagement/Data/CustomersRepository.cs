@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CustomerManagement.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace CustomerManagement.Data
 {
+   
     public class CustomersRepository : ICustomersRepository
     {
         private CustomerDbContext _context;
@@ -33,7 +35,7 @@ namespace CustomerManagement.Data
             return await _context.Customers
                 .Include(s => s.State)
                 .Include(o => o.Orders)
-                .SingleOrDefaultAsync(c => c.CustomerID == id);
+                .SingleOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<Customer> InsertCustomerAsync(Customer customer)
@@ -71,7 +73,7 @@ namespace CustomerManagement.Data
         public async Task<bool> DeleteCustomerAsync(int id)
         {
             var customer = await _context.Customers.Include(o => o.Orders)
-                .SingleOrDefaultAsync(c => c.CustomerID == id);
+                .SingleOrDefaultAsync(c => c.Id == id);
 
             _context.Remove(customer);
 
