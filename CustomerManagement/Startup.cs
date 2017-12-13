@@ -37,7 +37,8 @@ namespace CustomerManagement
             });
 
 
-
+            services.AddScoped<ICustomersRepository, CustomersRepository>();
+            services.AddScoped<IStatesRepository, StatesRepository>();
             services.AddTransient<DbSeeder>();
 
 
@@ -49,6 +50,8 @@ namespace CustomerManagement
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, DbSeeder dbSeeder)
         {
+            app.UseDeveloperExceptionPage();
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             dbSeeder.SeedAsync().Wait();
